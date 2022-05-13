@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
-
 import Product from "./Product";
 import Loading from "./Loading";
 
 function Products({
   category,
-  isLoadingFirst,
-  isLoadingSecond,
-  setIsLoadingFirst,
-  setIsLoadingSecond,
+  isAllProductsLoading,
+  isSelectedProductsLoading,
+  setIsAllProductsLoading,
+  setIsSelectedProductsLoading,
 }) {
   const [productList, setProductList] = useState(null);
   const [error, setError] = useState(null);
 
   const getAllProducts = async () => {
-    setIsLoadingFirst(true);
+    setIsAllProductsLoading(true);
     try {
       const response = await fetch("https://fakestoreapi.com/products");
-      if (!response.ok) throw "HTTP Error";
+      if (!response.ok) {
+        throw new Error("HTTP error");
+      }
       const data = await response.json();
       setProductList(data);
-      setIsLoadingFirst(false);
+      setIsAllProductsLoading(false);
     } catch (error) {
-      setIsLoadingFirst(false);
+      setIsAllProductsLoading(false);
       setError(error);
     }
   };
@@ -32,18 +33,21 @@ function Products({
   }, []);
 
   const getProducts = async () => {
-    setIsLoadingSecond(true);
+    setIsSelectedProductsLoading(true);
 
     try {
       const response = await fetch(
         `https://fakestoreapi.com/products/category/${category}`
       );
-      if (!response.ok) throw "HTTP Error";
+      if (!response.ok) {
+        throw new Error("HTTP error");
+      }
       const data = await response.json();
       setProductList(data);
-      setIsLoadingSecond(false);
+      setIsSelectedProductsLoading(false);
     } catch (error) {
       setError(error);
+      setIsSelectedProductsLoading(false);
     }
   };
 
@@ -60,10 +64,11 @@ function Products({
 
   return (
     <ul className="products-container">
-      {(isLoadingFirst === true || isLoadingSecond === true) && <Loading />}
+      {(isAllProductsLoading === true ||
+        isSelectedProductsLoading === true) && <Loading />}
 
-      {isLoadingFirst === false &&
-        isLoadingSecond === false &&
+      {isAllProductsLoading === false &&
+        isSelectedProductsLoading === false &&
         productList.map((eachProduct, index) => {
           return <Product key={index + 1} productInfo={eachProduct} />;
         })}

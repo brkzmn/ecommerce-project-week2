@@ -1,30 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Products from "../components/Products";
+import Header from "../components/Header";
 
-const HomePage = ({
-  category,
-  setCategory,
-  isLoadingFirst,
-  setIsLoadingFirst,
-  isLoadingSecond,
-  setIsLoadingSecond,
-}) => {
+const HomePage = () => {
+  const [category, setCategory] = useState(null);
+  const [isAllProductsLoading, setIsAllProductsLoading] = useState(false);
+  const [isSelectedProductsLoading, setIsSelectedProductsLoading] =
+    useState(false);
+
   return (
     <div className="App">
-      <h1>Products</h1>
+      <Header pageTitle={"Products"} />
+
       <Navbar
         category={category}
         setCategory={setCategory}
-        isLoadingSecond={isLoadingSecond}
-        setIsLoadingSecond={setIsLoadingSecond}
+        isSelectedProductsLoading={isSelectedProductsLoading}
+        setIsSelectedProductsLoading={setIsSelectedProductsLoading}
       />
       <Products
         category={category}
-        isLoadingFirst={isLoadingFirst}
-        setIsLoadingFirst={setIsLoadingFirst}
-        isLoadingSecond={isLoadingSecond}
-        setIsLoadingSecond={setIsLoadingSecond}
+        isAllProductsLoading={isAllProductsLoading}
+        setIsAllProductsLoading={setIsAllProductsLoading}
+        isSelectedProductsLoading={isSelectedProductsLoading}
+        setIsSelectedProductsLoading={setIsSelectedProductsLoading}
       />
     </div>
   );

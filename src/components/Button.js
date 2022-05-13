@@ -6,7 +6,6 @@ function Button({
   setCategory,
   activeIndex,
   setActiveIndex,
-  setIsLoading,
 }) {
   return (
     <button

@@ -1,7 +1,12 @@
 .App {
   text-align: center;
-  margin: 8px;
   font-size: 16px;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+  text-align: initial;
 }
 
 h1 {
@@ -44,6 +49,10 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  padding: 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 }
 
 .product-title {
@@ -73,6 +82,32 @@ h1 {
 .product-details-description {
   width: 90%;
   margin: auto;
+  padding: 20px;
+}
+
+.header-container {
+  background-color: #023047;
+  box-shadow: 0 17px 12px -4px rgb(33 35 38 / 47%);
+  color: #fff;
+  margin: 0;
+  margin-bottom: 15px;
+  min-height: 200px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.header-container h1 {
+  margin-top: 20px;
+}
+
+.details-title {
+  text-align: center;
+}
+
+.product-image-container {
+  padding: 20px;
 }
 
 /*-------loading------*/
@@ -168,6 +203,10 @@ h1 {
 
 /*----media queries---- */
 @media (min-width: 600px) {
+  .navbar {
+    padding-left: 20px;
+  }
+
   .product-card {
     width: calc(50% - 16px);
   }

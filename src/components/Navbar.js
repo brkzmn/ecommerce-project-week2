@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Button from "./Button";
+import Loading from "./Loading";
 
-function Navbar({ setCategory, setIsLoading }) {
+function Navbar({ setCategory }) {
   const [activeIndex, setActiveIndex] = useState(null);
   const [allCategories, setAllCategories] = useState([]);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getCategories = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         "https://fakestoreapi.com/products/categories"
       );
-      if (!response.ok) throw "HTTP error";
+      if (!response.ok) {
+        throw new Error("HTTP error");
+      }
       const data = await response.json();
       setAllCategories(data);
+      setIsLoading(false);
     } catch (error) {
       setError(error);
+      setIsLoading(false);
     }
   };
 
@@ -23,12 +30,10 @@ function Navbar({ setCategory, setIsLoading }) {
     getCategories();
   }, []);
 
-  if (error != null) {
-    return <div> {error.message}</div>;
-  }
-
   return (
     <nav className="navbar">
+      {isLoading === true && <Loading />}
+      {error !== null && <div>{error.message}</div>}
       {allCategories.map((eachCategory, index) => {
         return (
           <Button
@@ -38,7 +43,6 @@ function Navbar({ setCategory, setIsLoading }) {
             setCategory={setCategory}
             setActiveIndex={setActiveIndex}
             activeIndex={activeIndex}
-            setIsLoading={setIsLoading}
           />
         );
       })}

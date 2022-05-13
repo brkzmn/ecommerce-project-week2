@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
+import Header from "../components/Header";
 
 const ProductDetailsPage = () => {
   const [details, setDetails] = useState({});
-  const [isLoadingDetails, setIsLoadingDetails] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { id } = useParams();
 
   const getDetails = async () => {
+    setError(false);
+    setIsLoading(true);
     try {
       const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-      if (!response.ok) throw "HTTP error";
+      if (!response.ok) {
+        throw new Error("HTTP error");
+      }
       const data = await response.json();
       setDetails(data);
-      setIsLoadingDetails(false);
+      setIsLoading(false);
     } catch (error) {
       setError(error);
+      setIsLoading(false);
     }
   };
 
@@ -24,17 +30,13 @@ const ProductDetailsPage = () => {
     getDetails();
   }, []);
 
-  if (error != null) {
-    return <div>{error.message}</div>;
-  }
-  if (details == null) {
-    return <div>PRODUCT NOT FOUND</div>;
-  }
-
   return (
     <div className="product-details">
-      {isLoadingDetails === true && <Loading />}
-      {isLoadingDetails === false && (
+      <Header pageTitle={"Product Details"} />
+      {isLoading === true && <Loading />}
+      {error !== null && <div> {error.message}</div>}
+
+      {Object.keys(details).length !== 0 && (
         <div>
           <div className="details-title-container">
             <h1 className="details-title">{details.title}</h1>
